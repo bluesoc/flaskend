@@ -1,4 +1,4 @@
-name: Deploy to Docker
+name: Docker Image CI
 
 on:
   push:
@@ -9,15 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-
+      - name: Checkout Docker
+        uses: actions/checkout@v3
+        run: docker build . --file Dockerfile --tag flaskend:$(date +%s)
