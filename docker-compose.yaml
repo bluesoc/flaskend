@@ -1,0 +1,31 @@
+# Arquivo examplo para deploy
+# com Docker-Compose
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      FLASK_ENV: "development" # / "production"
+      FLASK_APP: app.py
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13              # Usa PostgreSQL
+    restart: always
+    environment:
+      POSTGRES_USER: user           # Nome do usuário
+      POSTGRES_PASSWORD: password   # Senha do banco de dados
+      POSTGRES_DB: mydatabase       # Nome do banco de dados
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Persistência de dados
+
+volumes:
+  db_data:  # Volume para persistir dados do banco de dados
